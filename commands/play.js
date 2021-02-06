@@ -24,9 +24,9 @@ module.exports = {
       const songInfo = await ytdl.getInfo(args[1]);
       const song = {
         title: songInfo.videoDetails.title,
-        url: songInfo.videoDetails.video_url
+        url: songInfo.videoDetails.video_url,
       };
-
+      const image = songInfo.videoDetails.thumbnails[1].url;
       if (!serverQueue) {
         const queueContruct = {
           textChannel: message.channel,
@@ -34,7 +34,7 @@ module.exports = {
           connection: null,
           songs: [],
           volume: 5,
-          playing: true
+          playing: true,
         };
 
         queue.set(message.guild.id, queueContruct);
@@ -44,7 +44,7 @@ module.exports = {
         try {
           var connection = await voiceChannel.join();
           queueContruct.connection = connection;
-          this.play(message, queueContruct.songs[0]);
+          this.play(message, queueContruct.songs[0], image);
         } catch (err) {
           console.log(err);
           queue.delete(message.guild.id);
@@ -52,9 +52,30 @@ module.exports = {
         }
       } else {
         serverQueue.songs.push(song);
-        return message.channel.send(
-          `${song.title} đã được thêm vào hàng đợi!`
-        );
+        const content = {
+          embed: {
+            color: 13632027,
+            footer: {
+              icon_url: "https://i.imgur.com/kNBARt4.png",
+              text: "Code by Mokdev",
+            },
+            author: {
+              name: "Mlem Mlem",
+              url: "https://www.facebook.com/localhost.xyz",
+              icon_url: "https://i.imgur.com/kNBARt4.png",
+            },
+            thumbnail: {
+              url: image,
+            },
+            fields: [
+              {
+                name: "Đang xếp hàng cho:",
+                value: song.title,
+              },
+            ],
+          },
+        };
+        return message.channel.send(content);
       }
     } catch (error) {
       console.log(error);
@@ -62,7 +83,7 @@ module.exports = {
     }
   },
 
-  play(message, song) {
+  play(message, song, image) {
     const queue = message.client.queue;
     const guild = message.guild;
     const serverQueue = queue.get(message.guild.id);
@@ -79,8 +100,31 @@ module.exports = {
         serverQueue.songs.shift();
         this.play(message, serverQueue.songs[0]);
       })
-      .on("error", error => console.error(error));
+      .on("error", (error) => console.error(error));
     dispatcher.setVolumeLogarithmic(serverQueue.volume / 5);
-    serverQueue.textChannel.send(`Bắt đầu phát: **${song.title}**`);
-  }
+    const content = {
+      embed: {
+        color: 13632027,
+        footer: {
+          icon_url: "https://i.imgur.com/kNBARt4.png",
+          text: "Code by Mokdev",
+        },
+        author: {
+          name: "Mlem Mlem",
+          url: "https://www.facebook.com/localhost.xyz",
+          icon_url: "https://i.imgur.com/kNBARt4.png",
+        },
+        thumbnail: {
+          url: image,
+        },
+        fields: [
+          {
+            name: "Bắt đầu phát:",
+            value: song.title,
+          },
+        ],
+      },
+    };
+    serverQueue.textChannel.send(content);
+  },
 };

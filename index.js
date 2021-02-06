@@ -35,8 +35,8 @@ client.on("message", async (message) => {
   const args = message.content.slice(prefix.length).split(/ +/);
   const commandName = args.shift().toLowerCase();
   const command = client.commands.get(commandName);
-
-  if (message.author.bot) return;
+  
+  if (message.author.bot) return;git 
   if (Number(message.content) < 11 && Number(message.content) > 0) {
 	const index = Number(message.content);
     const cmd = client.commands.get("select");
