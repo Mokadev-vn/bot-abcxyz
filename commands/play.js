@@ -5,6 +5,7 @@ module.exports = {
   description: "Phát một bài hát trong kênh của bạn!",
   async execute(message) {
     try {
+      
       const args = message.content.split(" ");
       const queue = message.client.queue;
       const serverQueue = message.client.queue.get(message.guild.id);
@@ -25,8 +26,10 @@ module.exports = {
       const song = {
         title: songInfo.videoDetails.title,
         url: songInfo.videoDetails.video_url,
+        thumbnail: songInfo.videoDetails.thumbnails[1].url
       };
       const image = songInfo.videoDetails.thumbnails[1].url;
+
       if (!serverQueue) {
         const queueContruct = {
           textChannel: message.channel,
