@@ -11,7 +11,7 @@ module.exports = {
     serverQueue.songs.forEach((v, index) => {
         if(index === 0) return;
         
-        description +=  `[${index}] ${v.title}\n`;
+        description +=  `\`[${index}]\` ${v.title}\n`;
     });
 
     const content = {
