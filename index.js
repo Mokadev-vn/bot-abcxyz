@@ -15,7 +15,8 @@ for (const file of commandFiles) {
   client.commands.set(command.name, command);
 }
 
-let data = [];
+let data = "";
+let chui = 0;
 
 console.log(client.commands);
 
@@ -35,14 +36,17 @@ client.on("message", async (message) => {
   const args = message.content.slice(prefix.length).split(/ +/);
   const commandName = args.shift().toLowerCase();
   const command = client.commands.get(commandName);
-  
+
   if (message.author.bot) return;
-  
+
   if (Number(message.content) < 11 && Number(message.content) > 0) {
-	const index = Number(message.content);
+    if (typeof data == "string") return;
+    const index = Number(message.content);
     const cmd = client.commands.get("select");
     cmd.execute(message, data, index);
+    data = "";
   }
+
   if (!message.content.startsWith(prefix)) return;
 
   try {
@@ -50,6 +54,8 @@ client.on("message", async (message) => {
       command.execute(message, client);
     } else if (commandName == "search") {
       data = command.execute(message);
+    } else if (commandName == "chui") {
+      chui = command.execute(message);
     } else {
       command.execute(message);
     }
@@ -60,5 +66,9 @@ client.on("message", async (message) => {
     );
   }
 });
+
+
+
+
 
 client.login(token);

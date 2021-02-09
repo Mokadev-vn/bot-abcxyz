@@ -1,5 +1,3 @@
-const fs = require('fs')
-
 module.exports = {
 	name: 'tet',
 	description: 'Xem còn mấy ngày nữa đến tết.',
