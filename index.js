@@ -18,7 +18,8 @@ for (const file of commandFiles) {
 let data = "";
 let chui = 0;
 
-console.log(client.commands);
+// console.log(client.commands);
+console.log('Loading.........');
 
 client.once("ready", () => {
   console.log("Ready!");
@@ -66,9 +67,6 @@ client.on("message", async (message) => {
     );
   }
 });
-
-
-
 
 
 client.login(token);
